@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | JzProject</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body class="bg-gray-900 text-white" x-data="{ open: false }" @resize.window="if (window.innerWidth >= 1024) open = true; else open = false">
+    <!-- Overlay -->
+    <div x-show="open" @click="open = false" :class="{'overlay-open': open, 'overlay': true}" class="fixed inset-0"></div>
+
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4 shadow-md flex justify-between items-center z-30 relative">
+        <div class="flex items-center">
+            <!-- Burger Menu Button (Visible on Mobile) -->
+            <button @click="open = !open" class="text-white mr-4 focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <!-- Logo -->
+            <div class="text-2xl font-bold">Teacher Dashboard</div>
+        </div>
+        <!-- Icons and Profile Picture -->
+        <div class="flex items-center space-x-4">
+            <!-- Only show on larger screens -->
+            <div class="hidden lg:block text-sm">Nama Guru</div>
+            <!-- Icons (Visible on Mobile and Larger Screens) -->
+            <div class="flex space-x-4">
+                <button class="focus:outline-none">
+                    <i class="fas fa-bell text-white text-xl"></i>
+                </button>
+                <button class="focus:outline-none">
+                    <i class="fas fa-envelope text-white text-xl"></i>
+                </button>
+                <!-- Profile Image -->
+                <img src="https://via.placeholder.com/40" class="rounded-full w-10 h-10" alt="Profile Image">
+            </div>
+        </div>
+    </nav>
+
+
+    <aside :class="{'sidebar-open': open}" class="sidebar" id="sidebar">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-picture">
+                <img src="https://via.placeholder.com/50" alt="Profile Picture">
+                <span class="status-indicator status-online"></span> <!-- Replace with status-offline for offline -->
+            </div>
+            <div>
+                <div class="username">Raihan Hariyanto Putra</div>
+                <div class="role-badge">Guru</div>
+            </div>
+        </div>
+        <!-- Navigation Links -->
+        <div class="sidebar-buttons">
+            <a href="dashboard.html" class="sidebar-button"><i class="fas fa-home"></i> Beranda Situs</a>
+            <!-- Data Guru -->
+            <div class="sidebar-dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown(this)">
+                    <i class="fas fa-graduation-cap"></i> Kursus Saya
+                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </button>
+                <div class="sidebar-dropdown-content">
+                    <a href="kursus/add-course.html"><span class="dropdown-icon"></span> Tambah Kursus</a>
+                    <a href="kursus/list-course.html"><span class="dropdown-icon"></span> List Kursus</a>
+                </div>
+            </div>
+            <div class="sidebar-dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown(this)">
+                    <i class="fas fa-cog"></i> Pengaturan
+                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </button>
+                <div class="sidebar-dropdown-content">
+                    <a href="settings/profile.html"><span class="dropdown-icon"></span> Pengaturan Akun</a>
+                    <a href="#"><span class="dropdown-icon"></span> Atur Ulang Password</a>
+                    <a href="#"><span class="dropdown-icon"></span> Privasi</a>
+                </div>
+            </div>
+            <!-- <a href="settings/profile.html" class="sidebar-button"><i class="fas fa-users"></i> Edit Profile</a> -->
+            <!-- its will showing while user has role admin -->
+            <hr>
+            <!-- Create paragraft tailwind-->
+             
+            <a href="main/dashboard.html" class="sidebar-button"><i class="fas fa-home"></i> Admin Dashboard</a>
+            <a href="main/s_dashboard.html" class="sidebar-button"><i class="fas fa-home"></i> Siswa Dashboard</a>
+        </div>
+        
+    </aside>
+    
+
+    <!-- Main Content -->
+    <main class="content-area flex-1">
+        <!-- Profile Section -->
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg mb-8 flex items-center justify-between">
+            <!-- Profile Image and Info -->
+            <div class="flex items-center">
+                <!-- Profile Image -->
+                <img src="https://via.placeholder.com/50" class="rounded-full w-16 h-16 mr-4 border-2 border-white shadow-sm" alt="Profile Image">
+                <!-- Admin User Info -->
+                <div>
+                    <div class="text-2xl font-semibold text-white">Raihan Hariyanto Putra</div>
+                    <!-- Role Badge -->
+                    <span class="bg-blue-500 text-gray-800 text-xs font-medium px-2 py-1 rounded-full">Administrator</span>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-4">
+                <!-- Edit Profile Button -->
+                <button class="bg-green-600 text-blue px-3 py-1 rounded-lg hover:bg-green-300 shadow-md">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <!-- Notification Icon -->
+                <button class="text-yellow-600 hover:text-yellow-500">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <!-- Logout Icon -->
+                <button class="text-red-600 hover:text-red-500">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        
+        <!-- Dashboard Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Total Exams Card -->
+            <div class="card bg-gray-800 p-4 rounded-lg flex items-center border border-purple-700  ">
+                <i class="fas fa-file-alt text-white text-3xl mr-4"></i>
+                <div>
+                    <h3 class="text-lg font-bold mb-2 text-white">Total Exams</h3>
+                    <p class="text-2xl font-semibold text-white">124</p>
+                </div>
+            </div>
+            <!-- Total Students Card -->
+            <div class="card p-4 rounded-lg flex items-center border border-purple-700">
+                <i class="fas fa-user-graduate text-white text-3xl mr-4"></i>
+                <div>
+                    <h3 class="text-lg font-bold mb-2">Total Ruangan</h3>
+                    <p class="text-2xl font-semibold">127</p>
+                </div>
+            </div>
+            <!-- Total Pass Rate Card -->
+            <div class="card p-4 rounded-lg flex items-center border border-purple-700">
+                <i class="fas fa-tachometer-alt text-white text-3xl mr-4"></i>
+                <div>
+                    <h3 class="text-lg font-bold mb-2">Pass Rate</h3>
+                    <p class="text-2xl font-semibold">78%</p>
+                </div>
+            </div>
+        </div>
+        <!-- Total Class -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Total Kelas Card -->
+            <div class="card bg-gray-800 p-4 rounded-lg flex items-center border border-purple-700 shadow-md hover:shadow-lg hover:bg-gray-700 transition duration-300 ease-in-out">
+                <i class="fas fa-chalkboard-teacher text-white text-3xl mr-4"></i>
+                <div>
+                    <h3 class="text-lg font-bold mb-2 text-white">Total Kelas</h3>
+                    <p class="text-2xl font-semibold text-white">17</p>
+                </div>
+            </div>
+            <!-- Total Jurusan Card -->
+            <div class="card bg-gray-800 p-4 rounded-lg flex items-center border border-purple-700 shadow-md hover:shadow-lg hover:bg-gray-700 transition duration-300 ease-in-out">
+                <i class="fas fa-book-reader text-white text-3xl mr-4"></i>
+                <div>
+                    <h3 class="text-lg font-bold mb-2 text-white">Total Jurusan</h3>
+                    <p class="text-2xl font-semibold text-white">6</p>
+                </div>
+            </div>
+            <!-- Total Guru Card -->
+            <div class="card bg-gray-800 p-4 rounded-lg flex items-center border border-purple-700 shadow-md hover:shadow-lg hover:bg-gray-700 transition duration-300 ease-in-out">
+                <i class="fas fa-chalkboard text-white text-3xl mr-4"></i>
+                <div>
+                    <h3 class="text-lg font-bold mb-2 text-white">Total Guru</h3>
+                    <p class="text-2xl font-semibold text-white">70</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Exams Table -->
+        <div class="bg-gray-800 p-4 rounded shadow-md mb-8">
+            <h2 class="text-xl font-bold mb-2">Recent Exams</h2>
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-gray-700">
+                        <th class="p-2 text-left">Exam Name</th>
+                        <th class="p-2 text-left">Date</th>
+                        <th class="p-2 text-left">Participants</th>
+                        <th class="p-2 text-left">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2">Math Test</td>
+                        <td class="p-2">2024-08-15</td>
+                        <td class="p-2">120</td>
+                        <td class="p-2 text-green-400">Completed</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Science Quiz</td>
+                        <td class="p-2">2024-08-20</td>
+                        <td class="p-2">90</td>
+                        <td class="p-2 text-yellow-400">Ongoing</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Charts and Graphs --> 
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Exam Performance Chart -->
+            <div class="card border border-purple-700">
+                <h3 class="text-lg font-bold mb-2">Exam Performance</h3>
+                <div class="chart-container">
+                    <canvas id="examPerformanceChart"></canvas>
+                </div>
+            </div>
+            <!-- Student Participation Chart -->
+            <div class="card border border-purple-700">
+                <h3 class="text-lg font-bold mb-2">Student Participation</h3>
+                <div class="chart-container">
+                    <canvas id="studentParticipationChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleDropdown(button) {
+            const dropdownContent = button.nextElementSibling;
+            dropdownContent.classList.toggle('show');
+            button.classList.toggle('open');
+        }
+    </script>
+    <script>
+        
+
+        // Data for Exam Performance Chart
+        const examPerformanceData = {
+            labels: ['Math', 'Science', 'English', 'History', 'Geography'],
+            datasets: [{
+                label: 'Average Score',
+                data: [85, 78, 92, 74, 88],
+                backgroundColor: 'rgba(147, 51, 234, 0.5)',
+                borderColor: 'rgba(147, 51, 234, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Options for Exam Performance Chart
+        const examPerformanceOptions = {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
+
+        // Initialize Exam Performance Chart
+        const examPerformanceChartCtx = document.getElementById('examPerformanceChart').getContext('2d');
+        const examPerformanceChart = new Chart(examPerformanceChartCtx, {
+            type: 'bar',
+            data: examPerformanceData,
+            options: examPerformanceOptions
+        });
+
+        // Data for Student Participation Chart
+        const studentParticipationData = {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Number of Participants',
+                data: [50, 60, 55, 70],
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Options for Student Participation Chart
+        const studentParticipationOptions = {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
+
+        // Initialize Student Participation Chart
+        const studentParticipationChartCtx = document.getElementById('studentParticipationChart').getContext('2d');
+        const studentParticipationChart = new Chart(studentParticipationChartCtx, {
+            type: 'line',
+            data: studentParticipationData,
+            options: studentParticipationOptions
+        });
+
+        // Adjust sidebar on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                document.querySelector('aside').classList.add('sidebar-open');
+                document.querySelector('.overlay').classList.remove('overlay-open');
+                document.querySelector('.content-area').classList.add('sidebar-open');
+            } else {
+                document.querySelector('aside').classList.remove('sidebar-open');
+                document.querySelector('.overlay').classList.remove('overlay-open');
+                document.querySelector('.content-area').classList.remove('sidebar-open');
+            }
+        });
+    </script>
+</body>
+</html>+

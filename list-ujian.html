@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | JzProject</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    <style>
+        @media (min-width: 1024px) {
+            .content-area {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            .content-area .bg-gray-800.lg:float-right {
+                margin-left: 24px;
+            }
+        }
+        @media (max-width: 1024px) {
+            .content-area .bg-gray-800.lg:float-right {
+                float: none;
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+        @media (min-width: 1024px) {
+        .h-screen {
+            min-height: 100vh;
+        }
+    }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white" x-data="{ open: false }" @resize.window="if (window.innerWidth >= 1024) open = true; else open = false">
+    <!-- Overlay -->
+    <div x-show="open" @click="open = false" :class="{'overlay-open': open, 'overlay': true}" class="fixed inset-0"></div>
+
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4 shadow-md flex justify-between items-center z-30 relative">
+        <div class="flex items-center">
+            <!-- Burger Menu Button (Visible on Mobile) -->
+            <button @click="open = !open" class="text-white mr-4 focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <!-- Logo -->
+            <div class="text-2xl font-bold">Admin Dashboard</div>
+        </div>
+        <!-- Icons and Profile Picture -->
+        <div class="flex items-center space-x-4">
+            <!-- Only show on larger screens -->
+            <div class="hidden lg:block text-sm">Admin User</div>
+            <!-- Icons (Visible on Mobile and Larger Screens) -->
+            <div class="flex space-x-4">
+                <button class="focus:outline-none">
+                    <i class="fas fa-bell text-white text-xl"></i>
+                </button>
+                <button class="focus:outline-none">
+                    <i class="fas fa-envelope text-white text-xl"></i>
+                </button>
+                <!-- Profile Image -->
+                <img src="https://via.placeholder.com/40" class="rounded-full w-10 h-10" alt="Profile Image">
+            </div>
+        </div>
+    </nav>
+
+
+    <aside :class="{'sidebar-open': open}" class="sidebar" id="sidebar">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-picture">
+                <img src="https://via.placeholder.com/50" alt="Profile Picture">
+                <span class="status-indicator status-online"></span> <!-- Replace with status-offline for offline -->
+            </div>
+            <div>
+                <div class="username">Raihan Hariyanto Putra</div>
+                <div class="role-badge">Admin</div>
+            </div>
+        </div>
+        <!-- Navigation Links -->
+        <div class="sidebar-buttons">
+            <a href="dashboard.html" class="sidebar-button"><i class="fas fa-home"></i> Beranda Situs</a>
+            <a href="add-teacher.html" class="sidebar-button"><i class="fas fa-calendar-alt"></i> Tambah Guru Mapel</a>
+            <a href="upload_soal.html" class="sidebar-button"><i class="fas fa-file-alt"></i> Soal Ujian</a>
+            <a href="view-question.html" class="sidebar-button"><i class="fas fa-graduation-cap"></i> Kursus Saya</a>
+            <a href="settings/profile.html" class="sidebar-button"><i class="fas fa-users"></i> Edit Profile</a>
+        </div>
+        <div class="sidebar-dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown(this)">
+                <i class="fas fa-cog"></i> Pengaturan
+                <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </button>
+            <div class="sidebar-dropdown-content">
+                <a href="settings/profile.html"><span class="dropdown-icon"></span> Pengaturan Akun</a>
+                <a href="#"><span class="dropdown-icon"></span> Keamanan</a>
+                <a href="#"><span class="dropdown-icon"></span> Privasi</a>
+            </div>
+        </div>
+    </aside>
+    
+
+    <!-- Main Content -->
+    <main class="content-area p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-semibold">Editor Soal</h1>
+            <a href="#" class="text-blue-600 hover:underline">Kembali</a>
+        </div>
+    
+        <!-- Question and Options Section -->
+        <div class="flex lg:flex-row flex-col gap-6">
+            <!-- Left Section: Question and Answer Options -->
+            <div class="flex-1">
+                <!-- Breadcrumbs -->
+                <div class="mb-4 text-gray-600">
+                    <a href="#" class="hover:underline">PAKET A</a> / <a href="#" class="hover:underline">Pilihan Ganda</a> / #1
+                </div>
+    
+                <!-- Question Editor -->
+                <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+                    <h2 class="text-lg font-semibold mb-4">Soal 1</h2>
+                    <textarea id="question-editor" class="tinymce-editor"></textarea>
+                </div>
+    
+                <!-- Answer Options -->
+                <div class="bg-white shadow-md rounded-lg p-6">
+                    <ul class="flex mb-4 border-b">
+                        <li class="mr-6">
+                            <a href="#" class="inline-block text-blue-600 py-2 px-4 border-b-2 border-blue-600">Opsi Jawaban</a>
+                        </li>
+                        <li>
+                            <a href="#" class="inline-block text-gray-600 py-2 px-4 hover:text-blue-600">Kunci Jawaban</a>
+                        </li>
+                    </ul>
+    
+                    <p class="text-sm text-gray-600 mb-4">Tambahkan opsi jawaban sesuai dengan kebutuhan</p>
+    
+                    <!-- Option A -->
+                    <div class="flex items-center mb-4">
+                        <span class="text-xl font-bold mr-4">A</span>
+                        <textarea class="tinymce-editor flex-1"></textarea>
+                    </div>
+    
+                    <!-- Option B -->
+                    <div class="flex items-center mb-4">
+                        <span class="text-xl font-bold mr-4">B</span>
+                        <textarea class="tinymce-editor flex-1"></textarea>
+                    </div>
+    
+                    <!-- Add More Options Button -->
+                    <button class="text-blue-600 hover:underline">+ Tambah Opsi</button>
+                </div>
+            </div>
+    
+            <!-- Right Section: Question Details -->
+            <div class="lg:w-1/3 bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-lg font-semibold mb-4">Info Soal</h2>
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span>Nama Ujian</span>
+                        <span class="font-semibold">Example Exam 1</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Paket Soal</span>
+                        <span class="font-semibold">PAKET A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Grup Soal</span>
+                        <span class="font-semibold">Pilihan Ganda</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Judul</span>
+                        <span class="font-semibold">Soal 1</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Nomor</span>
+                        <span class="font-semibold">#1</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Tipe</span>
+                        <span class="font-semibold">Pilihan Ganda</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Mode Koreksi</span>
+                        <span class="font-semibold text-green-500">Otomatis</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Bobot</span>
+                        <span class="font-semibold">50.00%</span>
+                    </div>
+                </div>
+    
+                <!-- Edit Info Button -->
+                <div class="mt-6">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit Info Soal</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Include TinyMCE JS -->
+    <script src="https://cdn.tiny.cloud/1/qxqxnmb6ossrr4s34w5s9wjp1f2mc0h40cbz4iwy5n2v32vj/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '.tinymce-editor',
+            height: 200,
+            menubar: false,
+            plugins: 'lists link image table',
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+        });
+    </script>
+    
+    
+    
+
+    <script>
+        function toggleDropdown(button) {
+            const dropdownContent = button.nextElementSibling;
+            dropdownContent.classList.toggle('show');
+            button.classList.toggle('open');
+        }
+    </script>
+    <script>
+        // Adjust sidebar on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                document.querySelector('aside').classList.add('sidebar-open');
+                document.querySelector('.overlay').classList.remove('overlay-open');
+                document.querySelector('.content-area').classList.add('sidebar-open');
+            } else {
+                document.querySelector('aside').classList.remove('sidebar-open');
+                document.querySelector('.overlay').classList.remove('overlay-open');
+                document.querySelector('.content-area').classList.remove('sidebar-open');
+            }
+        });
+    </script>
+
+</body>
+</html>

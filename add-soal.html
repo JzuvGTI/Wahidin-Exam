@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | JzProject</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body class="bg-gray-900 text-white" x-data="{ open: false }" @resize.window="if (window.innerWidth >= 1024) open = true; else open = false">
+    <!-- Overlay -->
+    <div x-show="open" @click="open = false" :class="{'overlay-open': open, 'overlay': true}" class="fixed inset-0"></div>
+
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4 shadow-md flex justify-between items-center z-30 relative">
+        <div class="flex items-center">
+            <!-- Burger Menu Button (Visible on Mobile) -->
+            <button @click="open = !open" class="text-white mr-4 focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <!-- Logo -->
+            <div class="text-2xl font-bold">Admin Dashboard</div>
+        </div>
+        <!-- Icons and Profile Picture -->
+        <div class="flex items-center space-x-4">
+            <!-- Only show on larger screens -->
+            <div class="hidden lg:block text-sm">Admin User</div>
+            <!-- Icons (Visible on Mobile and Larger Screens) -->
+            <div class="flex space-x-4">
+                <button class="focus:outline-none">
+                    <i class="fas fa-bell text-white text-xl"></i>
+                </button>
+                <button class="focus:outline-none">
+                    <i class="fas fa-envelope text-white text-xl"></i>
+                </button>
+                <!-- Profile Image -->
+                <img src="https://via.placeholder.com/40" class="rounded-full w-10 h-10" alt="Profile Image">
+            </div>
+        </div>
+    </nav>
+
+
+    <aside :class="{'sidebar-open': open}" class="sidebar" id="sidebar">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-picture">
+                <img src="https://via.placeholder.com/50" alt="Profile Picture">
+                <span class="status-indicator status-online"></span> <!-- Replace with status-offline for offline -->
+            </div>
+            <div>
+                <div class="username">Raihan Hariyanto Putra</div>
+                <div class="role-badge">Admin</div>
+            </div>
+        </div>
+        <!-- Navigation Links -->
+        <div class="sidebar-buttons">
+            <a href="dashboard.html" class="sidebar-button"><i class="fas fa-home"></i> Beranda Situs</a>
+            <a href="add-teacher.html" class="sidebar-button"><i class="fas fa-calendar-alt"></i> Tambah Guru Mapel</a>
+            <a href="upload_soal.html" class="sidebar-button"><i class="fas fa-file-alt"></i> Soal Ujian</a>
+            <a href="view-question.html" class="sidebar-button"><i class="fas fa-graduation-cap"></i> Kursus Saya</a>
+            <a href="settings/profile.html" class="sidebar-button"><i class="fas fa-users"></i> Edit Profile</a>
+        </div>
+        <div class="sidebar-dropdown">
+            <button class="dropdown-button" onclick="toggleDropdown(this)">
+                <i class="fas fa-cog"></i> Pengaturan
+                <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </button>
+            <div class="sidebar-dropdown-content">
+                <a href="settings/profile.html"><span class="dropdown-icon"></span> Pengaturan Akun</a>
+                <a href="#"><span class="dropdown-icon"></span> Keamanan</a>
+                <a href="#"><span class="dropdown-icon"></span> Privasi</a>
+            </div>
+        </div>
+    </aside>
+    
+
+    <!-- Main Content -->
+    <main class="content-area flex-1">
+        <!-- Page Heading -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold text-white">Tambah Soal Ujian</h2>
+            <button class="bg-purple-600 text-white py-2 px-4 rounded shadow-md hover:bg-purple-700">
+                <i class="fas fa-save"></i> Simpan Soal
+            </button>
+        </div>
+
+        <!-- Question Form - Exam Style -->
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <!-- Question Number and Timer (Optional) -->
+            <div class="flex justify-between items-center mb-4">
+                <div class="text-lg text-white">Soal Nomor 1</div>
+                <!-- Optional Timer Display -->
+                <div class="text-sm text-gray-300">Waktu Tersisa: 15:00</div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-4">
+                <p class="text-white text-lg font-semibold">Pertanyaan:</p>
+                <p class="text-white text-md">Apa ibu kota negara Indonesia?</p>
+            </div>
+
+            <!-- Multiple Choice Options -->
+            <div class="mb-4">
+                <p class="text-white text-lg font-semibold">Pilih Jawaban:</p>
+                <div class="space-y-2">
+                    <label class="block bg-gray-600 p-3 rounded-lg cursor-pointer hover:bg-gray-500">
+                        <input type="radio" name="answer" value="1" class="mr-2"> Jakarta
+                    </label>
+                    <label class="block bg-gray-600 p-3 rounded-lg cursor-pointer hover:bg-gray-500">
+                        <input type="radio" name="answer" value="2" class="mr-2"> Bandung
+                    </label>
+                    <label class="block bg-gray-600 p-3 rounded-lg cursor-pointer hover:bg-gray-500">
+                        <input type="radio" name="answer" value="3" class="mr-2"> Surabaya
+                    </label>
+                    <label class="block bg-gray-600 p-3 rounded-lg cursor-pointer hover:bg-gray-500">
+                        <input type="radio" name="answer" value="4" class="mr-2"> Medan
+                    </label>
+                </div>
+            </div>
+
+            <!-- Feedback Section -->
+            <div class="mb-4">
+                <p class="text-white text-lg font-semibold">Penjelasan (opsional):</p>
+                <textarea rows="4" class="w-full p-2 rounded bg-gray-600 text-white" placeholder="Tambahkan penjelasan tentang jawaban ini..."></textarea>
+            </div>
+
+            <!-- Tags for the Question -->
+            <div class="mb-4">
+                <label for="tags" class="block text-white text-sm font-semibold mb-2">Tag (pisahkan dengan koma):</label>
+                <input type="text" id="tags" name="tags" class="w-full p-2 rounded bg-gray-600 text-white" placeholder="contoh: geografi, ibu kota, negara">
+            </div>
+
+            <!-- Save and Cancel Buttons -->
+            <div class="flex justify-end space-x-4">
+                <button class="bg-gray-500 text-white py-2 px-4 rounded shadow-md hover:bg-gray-600">
+                    Batal
+                </button>
+                <button class="bg-green-600 text-white py-2 px-4 rounded shadow-md hover:bg-green-700">
+                    Simpan Soal
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleDropdown(button) {
+            const dropdownContent = button.nextElementSibling;
+            dropdownContent.classList.toggle('show');
+            button.classList.toggle('open');
+        }
+    </script>
+    <script>
+
+        // Adjust sidebar on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                document.querySelector('aside').classList.add('sidebar-open');
+                document.querySelector('.overlay').classList.remove('overlay-open');
+                document.querySelector('.content-area').classList.add('sidebar-open');
+            } else {
+                document.querySelector('aside').classList.remove('sidebar-open');
+                document.querySelector('.overlay').classList.remove('overlay-open');
+                document.querySelector('.content-area').classList.remove('sidebar-open');
+            }
+        });
+    </script>
+</body>
+</html>
